@@ -11,6 +11,24 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap');
   
+  /* Container da imagem */
+.card .relative.h-40 {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background-color: #ffffff !important; /* Esconde bordas mesclando com fundo branco */
+  padding: 8px !important;
+}
+
+/* Imagem do produto */
+.product-img {
+  object-fit: contain !important;
+  max-height: 100% !important;
+  max-width: 100% !important;
+  width: auto !important;
+  height: auto !important;
+}
+
   body {
     font-family: 'Poppins', sans-serif;
     background-color: #f8fafc;
@@ -362,7 +380,7 @@
         </div>
       </div>
       <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_hamburguer" data-id="lh15" data-name="X-Calabresa" data-price="32.00">
-        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="hhttps://i.pinimg.com/474x/5b/48/77/5b48776a114137c79295efedc8177eac.jpg" alt="X-Calabresa" class="product-img w-full h-full object-cover" loading="lazy" />
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQt43COEnodQyCxGNNwnIxOWc-RmWgDWxpXAWubRsHAro8eio0n7nlTLcIh&s=10" alt="X-Calabresa" class="product-img w-full h-full object-cover" loading="lazy" />
           <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 32,00</span>
         </div>
         <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
@@ -1424,7 +1442,7 @@
         </div>
       </div>
       <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="bebidas" data-id="bb6" data-name="Coca-Cola 1L Vidro" data-price="12.00">
-        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://tdc0wy.vteximg.com.br/arquivos/ids/159106-1000-1000/REFRIGERANTE-COCA-COLA-VD-1L-RETORNAVEL.png?v=638121802202370000" alt="Coca-Cola 1L Vidro" class="product-img w-full h-full object-cover" loading="lazy" />
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=500&auto=format&fit=crop" alt="Coca-Cola 1L Vidro" class="product-img w-full h-full object-cover" loading="lazy" />
           <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 12,00</span>
         </div>
         <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
