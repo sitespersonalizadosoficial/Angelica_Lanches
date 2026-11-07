@@ -109,6 +109,7 @@
         <button onclick="selectCategory('fritas')" id="tab-fritas" class="category-tab px-4 py-1.5 rounded-full transition text-white hover:bg-red-700">🍟 Fritas</button>
         <button onclick="selectCategory('hot_dogs')" id="tab-hot_dogs" class="category-tab px-4 py-1.5 rounded-full transition text-white hover:bg-red-700">🌭 Hot Dogs</button>
         <button onclick="selectCategory('macarrao_chapa')" id="tab-macarrao_chapa" class="category-tab px-4 py-1.5 rounded-full transition text-white hover:bg-red-700">🍝 Macarrão na Chapa</button>
+         <button onclick="selectCategory('panquecao')" id="tab-panquecao" class="category-tab px-4 py-1.5 rounded-full transition text-white hover:bg-red-700">🥞 Panquecão</button>
         <button onclick="selectCategory('adicionais')" id="tab-adicionais" class="category-tab px-4 py-1.5 rounded-full transition text-white hover:bg-red-700">➕ Adicionais</button>
         <button onclick="selectCategory('bebidas')" id="tab-bebidas" class="category-tab px-4 py-1.5 rounded-full transition text-white hover:bg-red-700">🥤 Bebidas</button>
       </div>
@@ -180,6 +181,9 @@
           <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
         </div>
       </div>
+
+     
+       
 
       <!-- COMBOS -->
       <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="combos"
@@ -1490,17 +1494,175 @@
         </div>
       </div>
 
+      <!-- PANQUECÃO -->
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="panquecao" data-id="pc1" data-name="Panquecão - Frango Catupiry" data-price="40.00">
+        <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+          <div>
+           
+            <h3 class="font-bold text-gray-800 text-base mt-2">Frango Catupiry</h3>
+            <p class="text-xs text-gray-500 mt-1">pomarola, frango desfiado, catupiry, muçarela, orégano e tomate.</p>
+          </div>
+          <div class="price font-extrabold text-red-700 text-lg">R$ 40,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="panquecao" data-id="pc2" data-name="Panquecão - Frango Catupiry c/ Milho" data-price="44.00">
+        <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+          <div>
+            <h3 class="font-bold text-gray-800 text-base mt-2">Frango Catupiry c/ Milho</h3>
+            <p class="text-xs text-gray-500 mt-1">pomarola, frango desfiado, catupiry, muçarela, milho, orégano e tomate.</p>
+          </div>
+          <div class="price font-extrabold text-red-700 text-lg">R$ 44,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="panquecao" data-id="pc3" data-name="Panquecão - Frango Bacon" data-price="45.00">
+        <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+          <div>
+            <h3 class="font-bold text-gray-800 text-base mt-2">Frango Bacon</h3>
+            <p class="text-xs text-gray-500 mt-1">pomarola, frango desfiado, catupiry, muçarela, bacon, orégano e tomate.</p>
+          </div>
+          <div class="price font-extrabold text-red-700 text-lg">R$ 45,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="panquecao" data-id="pc4" data-name="Panquecão - Brócolis" data-price="42.00">
+        <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+          <div>
+            <h3 class="font-bold text-gray-800 text-base mt-2">Brócolis</h3>
+            <p class="text-xs text-gray-500 mt-1">pomarola, brócolis, bacon, alho, muçarela, orégano e tomate.</p>
+          </div>
+          <div class="price font-extrabold text-red-700 text-lg">R$ 42,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="panquecao" data-id="pc5" data-name="Panquecão - L.B.B" data-price="40.00">
+        <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+          <div>
+            <h3 class="font-bold text-gray-800 text-base mt-2">L.B.B</h3>
+            <p class="text-xs text-gray-500 mt-1">pomarola, lombinho canadense, bacon, banana, muçarela, orégano e tomate.</p>
+          </div>
+          <div class="price font-extrabold text-red-700 text-lg">R$ 40,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="panquecao" data-id="pc6" data-name="Panquecão - Carne" data-price="45.00">
+        <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+          <div>
+            <h3 class="font-bold text-gray-800 text-base mt-2">Carne</h3>
+            <p class="text-xs text-gray-500 mt-1">pomarola, carne, muçarela, orégano e tomate.</p>
+          </div>
+          <div class="price font-extrabold text-red-700 text-lg">R$ 45,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="panquecao" data-id="pc7" data-name="Panquecão - Carne e Queijo" data-price="50.00">
+        <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+          <div>
+            <h3 class="font-bold text-gray-800 text-base mt-2">Carne e Queijo</h3>
+            <p class="text-xs text-gray-500 mt-1">pomarola, carne, muçarela, catupiry, orégano e tomate.</p>
+          </div>
+          <div class="price font-extrabold text-red-700 text-lg">R$ 50,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="panquecao" data-id="pc8" data-name="Panquecão - Palmito" data-price="42.00">
+        <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+          <div>
+            <h3 class="font-bold text-gray-800 text-base mt-2">Palmito</h3>
+            <p class="text-xs text-gray-500 mt-1">pomarola, muçarela, palmito, orégano, tomate e azeitona.</p>
+          </div>
+          <div class="price font-extrabold text-red-700 text-lg">R$ 42,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="panquecao" data-id="pc9" data-name="Panquecão - Palmito Catupiry" data-price="47.00">
+        <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+          <div>
+            <h3 class="font-bold text-gray-800 text-base mt-2">Palmito Catupiry</h3>
+            <p class="text-xs text-gray-500 mt-1">pomarola, muçarela, palmito, catupiry, orégano e tomate.</p>
+          </div>
+          <div class="price font-extrabold text-red-700 text-lg">R$ 47,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="panquecao" data-id="pc10" data-name="Panquecão - Calabresa Catupiry" data-price="45.00">
+        <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+          <div>
+            <h3 class="font-bold text-gray-800 text-base mt-2">Calabresa Catupiry</h3>
+            <p class="text-xs text-gray-500 mt-1">pomarola, muçarela, calabresa, catupiry, orégano e tomate.</p>
+          </div>
+          <div class="price font-extrabold text-red-700 text-lg">R$ 45,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="panquecao" data-id="pc11" data-name="Panquecão - 4 Queijos" data-price="50.00">
+        <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+          <div>
+            <h3 class="font-bold text-gray-800 text-base mt-2">4 Queijos</h3>
+            <p class="text-xs text-gray-500 mt-1">pomarola, provolone, catupiry, muçarela, gorgonzola e tomate.</p>
+          </div>
+          <div class="price font-extrabold text-red-700 text-lg">R$ 50,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="panquecao" data-id="pc12" data-name="Panquecão - Atum Catupiry" data-price="47.00">
+        <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+          <div>
+            <h3 class="font-bold text-gray-800 text-base mt-2">Atum Catupiry</h3>
+            <p class="text-xs text-gray-500 mt-1">pomarola, atum, catupiry, muçarela, orégano e tomate.</p>
+          </div>
+          <div class="price font-extrabold text-red-700 text-lg">R$ 47,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="panquecao" data-id="pc13" data-name="Panquecão - Muçarela" data-price="42.00">
+        <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+          <div>
+            <h3 class="font-bold text-gray-800 text-base mt-2">Muçarela</h3>
+            <p class="text-xs text-gray-500 mt-1">pomarola, muçarela, catupiry, orégano e tomate.</p>
+          </div>
+          <div class="price font-extrabold text-red-700 text-lg">R$ 42,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="panquecao" data-id="pc14" data-name="Panquecão - Lombo Catupiry" data-price="49.00">
+        <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+          <div>
+            <h3 class="font-bold text-gray-800 text-base mt-2">Lombo Catupiry</h3>
+            <p class="text-xs text-gray-500 mt-1">pomarola, muçarela, lombo canadense, catupiry, orégano e tomate.</p>
+          </div>
+          <div class="price font-extrabold text-red-700 text-lg">R$ 49,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+
     </div>
   </main>
 
-  <!-- MODAL BORDAS E ADICIONAIS PIZZA -->
+  <!-- MODAL DE SABORES E ADICIONAIS DA PIZZA -->
   <div id="pizza-modal" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
       <button onclick="closePizzaModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
         <i class="fa-solid fa-xmark text-2xl"></i>
       </button>
       <h3 id="pizza-modal-title" class="text-xl font-bold text-gray-800 mb-1">Personalizar Pizza</h3>
-      <p class="text-xs text-gray-500 mb-4">Deseja adicionar borda recheada ou ingredientes extras?</p>
+      <p class="text-xs text-gray-500 mb-4">Escolha um sabor ou monte sua pizza meio a meio. Se quiser, acrescente ingredientes adicionais.</p>
+      <div id="half-pizza-options" class="mb-4 rounded-xl border border-red-100 bg-red-50 p-3">
+        <label class="flex items-center gap-2 text-sm font-bold text-gray-800">
+          <input id="half-pizza-check" type="checkbox" onchange="toggleHalfPizza()" class="w-4 h-4 accent-red-700">
+          Quero escolher meio a meio
+        </label>
+        <div id="half-pizza-selects" class="hidden grid grid-cols-1 gap-2 mt-3">
+          <label class="text-xs font-semibold text-gray-700">Primeiro sabor
+            <select id="pizza-flavor-one" onchange="updateHalfPizza()" class="mt-1 w-full border rounded-lg p-2 text-sm bg-white"></select>
+          </label>
+          <label class="text-xs font-semibold text-gray-700">Segundo sabor
+            <select id="pizza-flavor-two" onchange="updateHalfPizza()" class="mt-1 w-full border rounded-lg p-2 text-sm bg-white"></select>
+          </label>
+          <p class="text-[11px] text-gray-500">No meio a meio, será considerado o valor do sabor mais caro.</p>
+        </div>
+      </div>
       <div id="pizza-extras-list" class="space-y-2 max-h-60 overflow-y-auto mb-6 pr-1"></div>
       <div class="flex items-center justify-between pt-4 border-t border-gray-100">
         <div>
@@ -1646,6 +1808,7 @@
     let deliveryType = 'delivery';
     let selectedPizza = null;
     let selectedPizzaExtras = [];
+    let halfPizzaFlavor = null;
 
     const categoryTitles = {
       promocoes: "🔥 Promoções Imbatíveis",
@@ -1658,6 +1821,7 @@
       adicionais: "➕ Adicionais",
       pizzas: "🍕 Pizzas Grandes",
       pizzas_doces: "🍫 Pizzas Doces",
+      panquecao: "🥞 Panquecão",
       porcoes_quentes: "🥩 Porções Quentes",
       fritas: "🍟 Porções de Fritas",
       hot_dogs: "🌭 Hot Dogs Especiais",
@@ -1666,8 +1830,6 @@
     };
 
     const pizzaExtrasOptions = [
-      { id: "b1", name: "Borda Catupiry", price: 14.00 },
-      { id: "b2", name: "Borda Cheddar", price: 17.00 },
       { id: "a1", name: "Adicional Bacon", price: 10.00 },
       { id: "a2", name: "Adicional Calabresa", price: 8.00 },
       { id: "a3", name: "Adicional Milho", price: 7.00 },
@@ -1713,7 +1875,8 @@
         id: card.dataset.id,
         name: card.dataset.name,
         price: parseFloat(card.dataset.price),
-        isPizza: card.dataset.isPizza === "true"
+        isPizza: card.dataset.isPizza === "true",
+        category: card.dataset.category
       };
 
       if (item.isPizza) {
@@ -1725,9 +1888,27 @@
 
     // MODAL PIZZA
     function openPizzaModal(product) {
-      selectedPizza = product;
+      selectedPizza = { ...product };
       selectedPizzaExtras = [];
+      halfPizzaFlavor = null;
       document.getElementById('pizza-modal-title').innerText = product.name;
+      document.getElementById('half-pizza-check').checked = false;
+      document.getElementById('half-pizza-selects').classList.add('hidden');
+
+      const flavorCards = [...document.querySelectorAll('.card[data-is-pizza="true"]')]
+        .filter(card => card.dataset.category === product.category);
+      const options = flavorCards.map(card => ({
+        name: card.dataset.name,
+        price: parseFloat(card.dataset.price)
+      }));
+      const optionHtml = options.map((flavor, index) =>
+        `<option value="${index}">${flavor.name} — R$ ${flavor.price.toFixed(2).replace('.', ',')}</option>`
+      ).join('');
+      document.getElementById('pizza-flavor-one').innerHTML = optionHtml;
+      document.getElementById('pizza-flavor-two').innerHTML = optionHtml;
+      const secondSelect = document.getElementById('pizza-flavor-two');
+      if (secondSelect.options.length > 1) secondSelect.selectedIndex = 1;
+      halfPizzaFlavor = null;
 
       const listContainer = document.getElementById('pizza-extras-list');
       listContainer.innerHTML = pizzaExtrasOptions.map(extra => `
@@ -1744,10 +1925,44 @@
       document.getElementById('pizza-modal').classList.remove('hidden');
     }
 
+    function toggleHalfPizza() {
+      const enabled = document.getElementById('half-pizza-check').checked;
+      document.getElementById('half-pizza-selects').classList.toggle('hidden', !enabled);
+      halfPizzaFlavor = null;
+      updateHalfPizza();
+    }
+
+    function updateHalfPizza() {
+      if (!selectedPizza || !document.getElementById('half-pizza-check').checked) {
+        if (selectedPizza) {
+          selectedPizza.name = selectedPizza.originalName || selectedPizza.name;
+          selectedPizza.price = selectedPizza.originalPrice ?? selectedPizza.price;
+        }
+        updatePizzaModalTotal();
+        return;
+      }
+      const cards = [...document.querySelectorAll('.card[data-is-pizza="true"]')]
+        .filter(card => card.dataset.category === selectedPizza.category);
+      const first = cards[Number(document.getElementById('pizza-flavor-one').value)];
+      const second = cards[Number(document.getElementById('pizza-flavor-two').value)];
+      if (!first || !second) return;
+      const firstName = first.dataset.name;
+      const secondName = second.dataset.name;
+      const firstPrice = parseFloat(first.dataset.price);
+      const secondPrice = parseFloat(second.dataset.price);
+      selectedPizza.originalName = selectedPizza.originalName || selectedPizza.name;
+      selectedPizza.originalPrice = selectedPizza.originalPrice ?? selectedPizza.price;
+      selectedPizza.name = `Pizza meio a meio (${firstName} / ${secondName})`;
+      selectedPizza.price = Math.max(firstPrice, secondPrice);
+      halfPizzaFlavor = { firstName, secondName };
+      updatePizzaModalTotal();
+    }
+
     function closePizzaModal() {
       document.getElementById('pizza-modal').classList.add('hidden');
       selectedPizza = null;
       selectedPizzaExtras = [];
+      halfPizzaFlavor = null;
     }
 
     function togglePizzaExtra(extraId) {
@@ -1794,7 +2009,7 @@
       const extraTotal = extras.reduce((sum, e) => sum + e.price, 0);
       const itemUnitPrice = product.price + extraTotal;
       const extrasIds = extras.map(e => e.id).sort().join('-');
-      const cartKey = `${product.id}_${extrasIds}`;
+      const cartKey = `${product.id}_${product.name}_${extrasIds}`;
 
       const existingIndex = cart.findIndex(c => c.cartKey === cartKey);
       if (existingIndex > -1) {
