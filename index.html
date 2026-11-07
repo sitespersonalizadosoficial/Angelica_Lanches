@@ -1838,409 +1838,573 @@
 
   <!-- LÓGICA JAVASCRIPT QUE LÊ AS DIVS DO HTML -->
   <script>
-    let currentCategory = 'promocoes';
-    let cart = [];
-    let deliveryType = 'delivery';
-    let selectedPizza = null;
-    let selectedPizzaExtras = [];
-    let halfPizzaFlavor = null;
+   let currentCategory = 'promocoes';
+let cart = [];
+let deliveryType = 'delivery';
+let selectedPizza = null;
+let selectedPizzaExtras = [];
+let halfPizzaFlavor = null;
 
-    const categoryTitles = {
-      promocoes: "🔥 Promoções Imbatíveis",
-      combos: "🍔 Combos Especiais",
-      lanches_hamburguer: "🍔 Lanches de Hambúrguer",
-      lanches_frango: "🍗 Lanches de Frango",
-      saladinhas: "🥬 Saladinhas",
-      lanches_file: "🥩 Lanches de Filé",
-      mini_lanches: "🍔 Mini Lanches",
-      adicionais: "➕ Adicionais",
-      pizzas: "🍕 Pizzas Grandes",
-      pizzas_doces: "🍫 Pizzas Doces",
-      panquecao: "🥞 Panquecão",
-      porcoes_quentes: "🥩 Porções Quentes",
-      fritas: "🍟 Porções de Fritas",
-      hot_dogs: "🌭 Hot Dogs Especiais",
-      macarrao_chapa: "🍝 Macarrão na Chapa",
-      bebidas: "🥤 Bebidas"
-    };
+const categoryTitles = {
+  promocoes: "🔥 Promoções Imbatíveis",
+  combos: "🍔 Combos Especiais",
+  lanches_hamburguer: "🍔 Lanches de Hambúrguer",
+  lanches_frango: "🍗 Lanches de Frango",
+  saladinhas: "🥬 Saladinhas",
+  lanches_file: "🥩 Lanches de Filé",
+  mini_lanches: "🍔 Mini Lanches",
+  adicionais: "➕ Adicionais",
+  pizzas: "🍕 Pizzas Grandes",
+  pizzas_doces: "🍫 Pizzas Doces",
+  panquecao: "🥞 Panquecão",
+  porcoes_quentes: "🥩 Porções Quentes",
+  fritas: "🍟 Porções de Fritas",
+  hot_dogs: "🌭 Hot Dogs Especiais",
+  macarrao_chapa: "🍝 Macarrão na Chapa",
+  bebidas: "🥤 Bebidas"
+};
 
-    const pizzaExtrasOptions = [
-      { id: "a1", name: "Adicional Bacon", price: 10.00 },
-      { id: "a2", name: "Adicional Calabresa", price: 8.00 },
-      { id: "a3", name: "Adicional Milho", price: 7.00 },
-      { id: "a4", name: "Adicional Cebola", price: 6.00 }
-    ];
+const pizzaExtrasOptions = [
+  { id: "a1", name: "Adicional Bacon", price: 10.00 },
+  { id: "a2", name: "Adicional Calabresa", price: 8.00 },
+  { id: "a3", name: "Adicional Milho", price: 7.00 },
+  { id: "a4", name: "Adicional Cebola", price: 6.00 }
+];
 
-    window.onload = () => {
-      selectCategory('promocoes');
-    };
+window.onload = () => {
+  selectCategory('promocoes');
+};
 
-    // =====================================
+// =====================================
 // HORÁRIO DE FUNCIONAMENTO
+// Brasília: quarta a segunda, das 18:45 às 23:45
+// Terça-feira: fechado
 // =====================================
 
-function verificarHorarioFuncionamento() {
-    const agora = new Date();
-
-    const horarioBrasilia = new Date(
-        agora.toLocaleString("en-US", {
-            timeZone: "America/Sao_Paulo"
-        })
-    );
-
-    const hora = horarioBrasilia.getHours();
-    const minutos = horarioBrasilia.getMinutes();
-
-    const horarioAtual = hora * 60 + minutos;
-
-    const abertura = 18 * 60 + 45; // 18:45
-    const fechamento = 23 * 60 + 45; // 23:45
-
-    const aberto = horarioAtual >= abertura &&
-                   horarioAtual < fechamento;
-
-    document.body.classList.toggle("site-fechado", !aberto);
-
-    let aviso = document.getElementById("aviso-horario");
-
-    if (!aviso) {
-        aviso = document.createElement("div");
-        aviso.id = "aviso-horario";
-
-        aviso.style.cssText = `
-            text-align: center;
-            padding: 15px;
-            background: #991b1b;
-            color: white;
-            font-weight: bold;
-            font-size: 14px;
-            position: sticky;
-            top: 0;
-            z-index: 999;
-        `;
-
-        document.body.prepend(aviso);
-    }
-
-    if (!aberto) {
-        aviso.innerHTML =
-            "Estamos fechados! Nosso horário é das 18:45 às 23:45.";
-        aviso.style.display = "block";
-    } else {
-        aviso.style.display = "none";
-    }
-
-    // Bloqueia os botões de adicionar produtos
-    document.querySelectorAll(".btn-add").forEach(botao => {
-        botao.disabled = !aberto;
-        botao.style.opacity = aberto ? "1" : "0.5";
-        botao.style.cursor = aberto ? "pointer" : "not-allowed";
-    });
-
-    return aberto;
-}
-
-// Verifica ao abrir e atualiza automaticamente
-verificarHorarioFuncionamento();
-setInterval(verificarHorarioFuncionamento, 10000);
-
-    // NAVEGAÇÃO DE CATEGORIAS
-    function selectCategory(catKey) {
-      currentCategory = catKey;
-
-      document.querySelectorAll('.category-tab').forEach(btn => {
-        btn.classList.remove('bg-yellow-400', 'text-red-900', 'font-bold', 'shadow');
-        btn.classList.add('text-white', 'hover:bg-red-700');
-      });
-
-      const activeTab = document.getElementById(`tab-${catKey}`);
-      if (activeTab) {
-        activeTab.classList.remove('text-white', 'hover:bg-red-700');
-        activeTab.classList.add('bg-yellow-400', 'text-red-900', 'font-bold', 'shadow');
-      }
-
-      document.getElementById('category-title').innerText = categoryTitles[catKey] || 'Cardápio';
-
-      // Filtra as divs .card do HTML
-      const cards = document.querySelectorAll('.card');
-      cards.forEach(card => {
-        if (card.dataset.category === catKey) {
-          card.classList.remove('hidden');
-        } else {
-          card.classList.add('hidden');
-        }
-      });
-    }
-
-    // CAPTURA DADOS DO CARD CLICADO
-    function addCardToCart(btn) {
-      const card = btn.closest('.card');
-      const item = {
-        id: card.dataset.id,
-        name: card.dataset.name,
-        price: parseFloat(card.dataset.price),
-        isPizza: card.dataset.isPizza === "true",
-        category: card.dataset.category
-      };
-
-      if (item.isPizza) {
-        openPizzaModal(item);
-      } else {
-        addToCart(item, []);
-      }
-    }
-
-    // MODAL PIZZA
-    function openPizzaModal(product) {
-      selectedPizza = { ...product };
-      selectedPizzaExtras = [];
-      halfPizzaFlavor = null;
-      document.getElementById('pizza-modal-title').innerText = product.name;
-      document.getElementById('half-pizza-check').checked = false;
-      document.getElementById('half-pizza-selects').classList.add('hidden');
-
-      const flavorCards = [...document.querySelectorAll('.card[data-is-pizza="true"]')]
-        .filter(card => card.dataset.category === product.category);
-      const options = flavorCards.map(card => ({
-        name: card.dataset.name,
-        price: parseFloat(card.dataset.price)
-      }));
-      const optionHtml = options.map((flavor, index) =>
-        `<option value="${index}">${flavor.name} — R$ ${flavor.price.toFixed(2).replace('.', ',')}</option>`
-      ).join('');
-      document.getElementById('pizza-flavor-one').innerHTML = optionHtml;
-      document.getElementById('pizza-flavor-two').innerHTML = optionHtml;
-      const secondSelect = document.getElementById('pizza-flavor-two');
-      if (secondSelect.options.length > 1) secondSelect.selectedIndex = 1;
-      halfPizzaFlavor = null;
-
-      const listContainer = document.getElementById('pizza-extras-list');
-      listContainer.innerHTML = pizzaExtrasOptions.map(extra => `
-        <label class="flex items-center justify-between p-2.5 border rounded-xl hover:bg-gray-50 cursor-pointer text-xs">
-          <div class="flex items-center space-x-2">
-            <input type="checkbox" onchange="togglePizzaExtra('${extra.id}')" class="rounded text-red-600 focus:ring-red-500 w-4 h-4">
-            <span class="font-medium text-gray-700">${extra.name}</span>
-          </div>
-          <span class="font-bold text-red-700">+ R$ ${extra.price.toFixed(2).replace('.', ',')}</span>
-        </label>
-      `).join('');
-
-      updatePizzaModalTotal();
-      document.getElementById('pizza-modal').classList.remove('hidden');
-    }
-
-    function toggleHalfPizza() {
-      const enabled = document.getElementById('half-pizza-check').checked;
-      document.getElementById('half-pizza-selects').classList.toggle('hidden', !enabled);
-      halfPizzaFlavor = null;
-      updateHalfPizza();
-    }
-
-    function updateHalfPizza() {
-      if (!selectedPizza || !document.getElementById('half-pizza-check').checked) {
-        if (selectedPizza) {
-          selectedPizza.name = selectedPizza.originalName || selectedPizza.name;
-          selectedPizza.price = selectedPizza.originalPrice ?? selectedPizza.price;
-        }
-        updatePizzaModalTotal();
-        return;
-      }
-      const cards = [...document.querySelectorAll('.card[data-is-pizza="true"]')]
-        .filter(card => card.dataset.category === selectedPizza.category);
-      const first = cards[Number(document.getElementById('pizza-flavor-one').value)];
-      const second = cards[Number(document.getElementById('pizza-flavor-two').value)];
-      if (!first || !second) return;
-      const firstName = first.dataset.name;
-      const secondName = second.dataset.name;
-      const firstPrice = parseFloat(first.dataset.price);
-      const secondPrice = parseFloat(second.dataset.price);
-      selectedPizza.originalName = selectedPizza.originalName || selectedPizza.name;
-      selectedPizza.originalPrice = selectedPizza.originalPrice ?? selectedPizza.price;
-      selectedPizza.name = `Pizza meio a meio (${firstName} / ${secondName})`;
-      selectedPizza.price = Math.max(firstPrice, secondPrice);
-      halfPizzaFlavor = { firstName, secondName };
-      updatePizzaModalTotal();
-    }
-
-    function closePizzaModal() {
-      document.getElementById('pizza-modal').classList.add('hidden');
-      selectedPizza = null;
-      selectedPizzaExtras = [];
-      halfPizzaFlavor = null;
-    }
-
-    function togglePizzaExtra(extraId) {
-      const idx = selectedPizzaExtras.indexOf(extraId);
-      if (idx > -1) selectedPizzaExtras.splice(idx, 1);
-      else selectedPizzaExtras.push(extraId);
-      updatePizzaModalTotal();
-    }
-
-    function updatePizzaModalTotal() {
-      if (!selectedPizza) return;
-      let total = selectedPizza.price;
-      selectedPizzaExtras.forEach(id => {
-        const ext = pizzaExtrasOptions.find(e => e.id === id);
-        if (ext) total += ext.price;
-      });
-      document.getElementById('pizza-modal-total').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
-    }
-
-    function confirmPizzaAddition() {
-      if (!selectedPizza) return;
-      const extrasDetails = selectedPizzaExtras.map(id => pizzaExtrasOptions.find(e => e.id === id));
-      addToCart(selectedPizza, extrasDetails);
-      closePizzaModal();
-    }
-
-    // AVISO TEMPORÁRIO QUANDO UM PRODUTO É ADICIONADO
-    let addedToastTimeout;
-    function showAddedToast(productName) {
-      const toast = document.getElementById('added-toast');
-      const message = document.getElementById('added-toast-message');
-      message.textContent = `${productName} adicionado ao carrinho!`;
-      toast.classList.remove('hidden');
-      toast.classList.add('flex');
-      clearTimeout(addedToastTimeout);
-      addedToastTimeout = setTimeout(() => {
-        toast.classList.add('hidden');
-        toast.classList.remove('flex');
-      }, 2500);
-    }
-
-    // CARRINHO
-    function addToCart(product, extras = []) {
-      const extraTotal = extras.reduce((sum, e) => sum + e.price, 0);
-      const itemUnitPrice = product.price + extraTotal;
-      const extrasIds = extras.map(e => e.id).sort().join('-');
-      const cartKey = `${product.id}_${product.name}_${extrasIds}`;
-
-      const existingIndex = cart.findIndex(c => c.cartKey === cartKey);
-      if (existingIndex > -1) {
-        cart[existingIndex].quantity += 1;
-      } else {
-        cart.push({ cartKey, product, extras, unitPrice: itemUnitPrice, quantity: 1 });
-      }
-      updateCartUI();
-      showAddedToast(product.name);
-    }
-
-    function updateCartUI() {
-      const cartBadge = document.getElementById('cart-badge');
-      const cartItemsContainer = document.getElementById('cart-items');
-      const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-      cartBadge.innerText = totalCount;
-
-      if (cart.length === 0) {
-        cartItemsContainer.innerHTML = `
-          <div class="text-center text-gray-400 py-12">
-            <i class="fa-solid fa-basket-shopping text-4xl mb-2"></i>
-            <p class="text-sm font-medium">Seu carrinho está vazio.</p>
-          </div>
-        `;
-      } else {
-        cartItemsContainer.innerHTML = cart.map((item, index) => {
-          const extrasText = item.extras.length > 0 
-            ? `<div class="text-[10px] text-gray-500 font-normal">+ ${item.extras.map(e => e.name).join(', ')}</div>` 
-            : '';
-
-          return `
-            <div class="flex items-center justify-between bg-gray-50 p-3 rounded-xl border border-gray-200">
-              <div class="flex-1 pr-2">
-                <h4 class="font-bold text-xs text-gray-800">${item.product.name}</h4>
-                ${extrasText}
-                <span class="text-xs font-bold text-red-700 block mt-0.5">
-                  R$ ${(item.unitPrice * item.quantity).toFixed(2).replace('.', ',')}
-                </span>
-              </div>
-              <div class="flex items-center space-x-2 bg-white px-2 py-1 rounded-lg border">
-                <button onclick="changeQty(${index}, -1)" class="text-gray-500 hover:text-red-700 text-xs px-1 font-bold">-</button>
-                <span class="text-xs font-bold text-gray-800">${item.quantity}</span>
-                <button onclick="changeQty(${index}, 1)" class="text-gray-500 hover:text-red-700 text-xs px-1 font-bold">+</button>
-              </div>
-            </div>
-          `;
-        }).join('');
-      }
-      calculateTotals();
-    }
-
-    function changeQty(index, delta) {
-      cart[index].quantity += delta;
-      if (cart[index].quantity <= 0) cart.splice(index, 1);
-      updateCartUI();
-    }
-
-    function setDeliveryType(type) {
-      deliveryType = type;
-      const btnDelivery = document.getElementById('btn-type-delivery');
-      const btnPickup = document.getElementById('btn-type-pickup');
-      const addressField = document.getElementById('address-field');
-
-      if (type === 'delivery') {
-        btnDelivery.className = "py-2 text-xs font-bold rounded-lg border border-red-700 bg-red-700 text-white flex items-center justify-center space-x-1";
-        btnPickup.className = "py-2 text-xs font-bold rounded-lg border border-gray-300 text-gray-700 flex items-center justify-center space-x-1";
-        addressField.classList.remove('hidden');
-      } else {
-        btnPickup.className = "py-2 text-xs font-bold rounded-lg border border-red-700 bg-red-700 text-white flex items-center justify-center space-x-1";
-        btnDelivery.className = "py-2 text-xs font-bold rounded-lg border border-gray-300 text-gray-700 flex items-center justify-center space-x-1";
-        addressField.classList.add('hidden');
-      }
-      calculateTotals();
-    }
-
-    function handlePaymentChange() {
-      const method = document.getElementById('payment-method').value;
-      const changeField = document.getElementById('change-field');
-      if (method === 'dinheiro') changeField.classList.remove('hidden');
-      else changeField.classList.add('hidden');
-    }
-
-    function calculateTotals() {
-      const subtotal = cart.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
-      const deliveryFee = deliveryType === 'delivery' && cart.length > 0 ? 5.00 : 0.00;
-      const total = subtotal + deliveryFee;
-
-      document.getElementById('subtotal-val').innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
-      document.getElementById('delivery-fee-val').innerText = `R$ ${deliveryFee.toFixed(2).replace('.', ',')}`;
-      document.getElementById('total-val').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
-    }
-
-    function toggleCart() {
-      document.getElementById('cart-drawer').classList.toggle('hidden');
-    }
-
-   function finishOrder() {
-
-  // VERIFICA HORÁRIO DE FUNCIONAMENTO DE BRASÍLIA
-  const horario = new Intl.DateTimeFormat('pt-BR', {
+function obterStatusFuncionamento() {
+  const partes = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/Sao_Paulo',
+    weekday: 'short',
     hour: '2-digit',
     minute: '2-digit',
     hourCycle: 'h23'
   }).formatToParts(new Date());
 
-  const hora = Number(horario.find(p => p.type === 'hour').value);
-  const minuto = Number(horario.find(p => p.type === 'minute').value);
+  const dia = partes.find(parte => parte.type === 'weekday').value;
+  const hora = Number(partes.find(parte => parte.type === 'hour').value);
+  const minutos = Number(partes.find(parte => parte.type === 'minute').value);
 
-  const horarioAtual = hora * 60 + minuto;
+  const horarioAtual = hora * 60 + minutos;
   const abertura = 18 * 60 + 45;
   const fechamento = 23 * 60 + 45;
 
-  if (horarioAtual < abertura || horarioAtual >= fechamento) {
-    alert("Estamos fechados! Nosso horário de funcionamento é todos os dias, das 18:45 às 23:45.");
+  const fechadoPorDia = dia === 'Tue';
+
+  const aberto = !fechadoPorDia &&
+    horarioAtual >= abertura &&
+    horarioAtual < fechamento;
+
+  let mensagem = '';
+
+  if (fechadoPorDia) {
+    mensagem = 'Hoje é terça-feira e estamos fechados. Voltamos na quarta-feira às 18:45.';
+  } else if (horarioAtual < abertura) {
+    mensagem = 'Estamos fechados! Abrimos hoje às 18:45.';
+  } else if (horarioAtual >= fechamento) {
+    mensagem = 'Estamos fechados! Nosso horário de funcionamento é das 18:45 às 23:45.';
+  }
+
+  return { aberto, mensagem };
+}
+
+function estaAbertoAgora() {
+  return obterStatusFuncionamento().aberto;
+}
+
+function verificarHorarioFuncionamento() {
+  const status = obterStatusFuncionamento();
+
+  let aviso = document.getElementById('aviso-horario');
+
+  if (!aviso) {
+    aviso = document.createElement('div');
+    aviso.id = 'aviso-horario';
+
+    aviso.style.cssText = `
+      text-align: center;
+      padding: 15px;
+      background: #991b1b;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      width: 100%;
+    `;
+
+    document.body.prepend(aviso);
+  }
+
+  if (!status.aberto) {
+    aviso.textContent = status.mensagem;
+    aviso.style.display = 'block';
+  } else {
+    aviso.style.display = 'none';
+  }
+
+  // Bloqueia os botões de adicionar produtos
+  document.querySelectorAll('.btn-add').forEach(botao => {
+    botao.disabled = !status.aberto;
+    botao.style.opacity = status.aberto ? '1' : '0.5';
+    botao.style.cursor = status.aberto ? 'pointer' : 'not-allowed';
+  });
+
+  document.body.classList.toggle('site-fechado', !status.aberto);
+
+  return status.aberto;
+}
+
+// Verifica ao carregar e atualiza automaticamente
+verificarHorarioFuncionamento();
+setInterval(verificarHorarioFuncionamento, 10000);
+
+
+// =====================================
+// NAVEGAÇÃO DE CATEGORIAS
+// =====================================
+
+function selectCategory(catKey) {
+  currentCategory = catKey;
+
+  document.querySelectorAll('.category-tab').forEach(btn => {
+    btn.classList.remove('bg-yellow-400', 'text-red-900', 'font-bold', 'shadow');
+    btn.classList.add('text-white', 'hover:bg-red-700');
+  });
+
+  const activeTab = document.getElementById(`tab-${catKey}`);
+
+  if (activeTab) {
+    activeTab.classList.remove('text-white', 'hover:bg-red-700');
+    activeTab.classList.add('bg-yellow-400', 'text-red-900', 'font-bold', 'shadow');
+  }
+
+  document.getElementById('category-title').innerText =
+    categoryTitles[catKey] || 'Cardápio';
+
+  const cards = document.querySelectorAll('.card');
+
+  cards.forEach(card => {
+    if (card.dataset.category === catKey) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+}
+
+
+// =====================================
+// CAPTURA DADOS DO CARD CLICADO
+// =====================================
+
+function addCardToCart(btn) {
+  const card = btn.closest('.card');
+
+  const item = {
+    id: card.dataset.id,
+    name: card.dataset.name,
+    price: parseFloat(card.dataset.price),
+    isPizza: card.dataset.isPizza === "true",
+    category: card.dataset.category
+  };
+
+  if (item.isPizza) {
+    openPizzaModal(item);
+  } else {
+    addToCart(item, []);
+  }
+}
+
+
+// =====================================
+// MODAL PIZZA
+// =====================================
+
+function openPizzaModal(product) {
+  selectedPizza = { ...product };
+  selectedPizzaExtras = [];
+  halfPizzaFlavor = null;
+
+  document.getElementById('pizza-modal-title').innerText = product.name;
+  document.getElementById('half-pizza-check').checked = false;
+  document.getElementById('half-pizza-selects').classList.add('hidden');
+
+  const flavorCards = [...document.querySelectorAll('.card[data-is-pizza="true"]')]
+    .filter(card => card.dataset.category === product.category);
+
+  const options = flavorCards.map(card => ({
+    name: card.dataset.name,
+    price: parseFloat(card.dataset.price)
+  }));
+
+  const optionHtml = options.map((flavor, index) =>
+    `<option value="${index}">${flavor.name} — R$ ${flavor.price.toFixed(2).replace('.', ',')}</option>`
+  ).join('');
+
+  document.getElementById('pizza-flavor-one').innerHTML = optionHtml;
+  document.getElementById('pizza-flavor-two').innerHTML = optionHtml;
+
+  const secondSelect = document.getElementById('pizza-flavor-two');
+
+  if (secondSelect.options.length > 1) {
+    secondSelect.selectedIndex = 1;
+  }
+
+  halfPizzaFlavor = null;
+
+  const listContainer = document.getElementById('pizza-extras-list');
+
+  listContainer.innerHTML = pizzaExtrasOptions.map(extra => `
+    <label class="flex items-center justify-between p-2.5 border rounded-xl hover:bg-gray-50 cursor-pointer text-xs">
+      <div class="flex items-center space-x-2">
+        <input type="checkbox" onchange="togglePizzaExtra('${extra.id}')" class="rounded text-red-600 focus:ring-red-500 w-4 h-4">
+        <span class="font-medium text-gray-700">${extra.name}</span>
+      </div>
+      <span class="font-bold text-red-700">+ R$ ${extra.price.toFixed(2).replace('.', ',')}</span>
+    </label>
+  `).join('');
+
+  updatePizzaModalTotal();
+
+  document.getElementById('pizza-modal').classList.remove('hidden');
+}
+
+function toggleHalfPizza() {
+  const enabled = document.getElementById('half-pizza-check').checked;
+
+  document.getElementById('half-pizza-selects').classList.toggle('hidden', !enabled);
+
+  halfPizzaFlavor = null;
+
+  updateHalfPizza();
+}
+
+function updateHalfPizza() {
+  if (!selectedPizza || !document.getElementById('half-pizza-check').checked) {
+    if (selectedPizza) {
+      selectedPizza.name = selectedPizza.originalName || selectedPizza.name;
+      selectedPizza.price = selectedPizza.originalPrice ?? selectedPizza.price;
+    }
+
+    updatePizzaModalTotal();
     return;
   }
 
-  // VERIFICA SE O CARRINHO ESTÁ VAZIO
+  const cards = [...document.querySelectorAll('.card[data-is-pizza="true"]')]
+    .filter(card => card.dataset.category === selectedPizza.category);
+
+  const first = cards[Number(document.getElementById('pizza-flavor-one').value)];
+  const second = cards[Number(document.getElementById('pizza-flavor-two').value)];
+
+  if (!first || !second) return;
+
+  const firstName = first.dataset.name;
+  const secondName = second.dataset.name;
+
+  const firstPrice = parseFloat(first.dataset.price);
+  const secondPrice = parseFloat(second.dataset.price);
+
+  selectedPizza.originalName = selectedPizza.originalName || selectedPizza.name;
+  selectedPizza.originalPrice = selectedPizza.originalPrice ?? selectedPizza.price;
+
+  selectedPizza.name = `Pizza meio a meio (${firstName} / ${secondName})`;
+  selectedPizza.price = Math.max(firstPrice, secondPrice);
+
+  halfPizzaFlavor = { firstName, secondName };
+
+  updatePizzaModalTotal();
+}
+
+function closePizzaModal() {
+  document.getElementById('pizza-modal').classList.add('hidden');
+
+  selectedPizza = null;
+  selectedPizzaExtras = [];
+  halfPizzaFlavor = null;
+}
+
+function togglePizzaExtra(extraId) {
+  const idx = selectedPizzaExtras.indexOf(extraId);
+
+  if (idx > -1) {
+    selectedPizzaExtras.splice(idx, 1);
+  } else {
+    selectedPizzaExtras.push(extraId);
+  }
+
+  updatePizzaModalTotal();
+}
+
+function updatePizzaModalTotal() {
+  if (!selectedPizza) return;
+
+  let total = selectedPizza.price;
+
+  selectedPizzaExtras.forEach(id => {
+    const ext = pizzaExtrasOptions.find(e => e.id === id);
+
+    if (ext) {
+      total += ext.price;
+    }
+  });
+
+  document.getElementById('pizza-modal-total').innerText =
+    `R$ ${total.toFixed(2).replace('.', ',')}`;
+}
+
+function confirmPizzaAddition() {
+  if (!selectedPizza) return;
+
+  const extrasDetails = selectedPizzaExtras.map(id =>
+    pizzaExtrasOptions.find(e => e.id === id)
+  );
+
+  addToCart(selectedPizza, extrasDetails);
+
+  closePizzaModal();
+}
+
+
+// =====================================
+// AVISO TEMPORÁRIO DE PRODUTO ADICIONADO
+// =====================================
+
+let addedToastTimeout;
+
+function showAddedToast(productName) {
+  const toast = document.getElementById('added-toast');
+  const message = document.getElementById('added-toast-message');
+
+  message.textContent = `${productName} adicionado ao carrinho!`;
+
+  toast.classList.remove('hidden');
+  toast.classList.add('flex');
+
+  clearTimeout(addedToastTimeout);
+
+  addedToastTimeout = setTimeout(() => {
+    toast.classList.add('hidden');
+    toast.classList.remove('flex');
+  }, 2500);
+}
+
+
+// =====================================
+// CARRINHO
+// =====================================
+
+function addToCart(product, extras = []) {
+
+  // Impede adicionar produtos quando a loja estiver fechada
+  if (!estaAbertoAgora()) {
+    verificarHorarioFuncionamento();
+    alert(obterStatusFuncionamento().mensagem);
+    return;
+  }
+
+  const extraTotal = extras.reduce((sum, e) => sum + e.price, 0);
+
+  const itemUnitPrice = product.price + extraTotal;
+
+  const extrasIds = extras.map(e => e.id).sort().join('-');
+
+  const cartKey = `${product.id}_${product.name}_${extrasIds}`;
+
+  const existingIndex = cart.findIndex(c => c.cartKey === cartKey);
+
+  if (existingIndex > -1) {
+    cart[existingIndex].quantity += 1;
+  } else {
+    cart.push({
+      cartKey,
+      product,
+      extras,
+      unitPrice: itemUnitPrice,
+      quantity: 1
+    });
+  }
+
+  updateCartUI();
+  showAddedToast(product.name);
+}
+
+function updateCartUI() {
+  const cartBadge = document.getElementById('cart-badge');
+  const cartItemsContainer = document.getElementById('cart-items');
+
+  const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+  cartBadge.innerText = totalCount;
+
+  if (cart.length === 0) {
+    cartItemsContainer.innerHTML = `
+      <div class="text-center text-gray-400 py-12">
+        <i class="fa-solid fa-basket-shopping text-4xl mb-2"></i>
+        <p class="text-sm font-medium">Seu carrinho está vazio.</p>
+      </div>
+    `;
+  } else {
+    cartItemsContainer.innerHTML = cart.map((item, index) => {
+
+      const extrasText = item.extras.length > 0
+        ? `<div class="text-[10px] text-gray-500 font-normal">+ ${item.extras.map(e => e.name).join(', ')}</div>`
+        : '';
+
+      return `
+        <div class="flex items-center justify-between bg-gray-50 p-3 rounded-xl border border-gray-200">
+          <div class="flex-1 pr-2">
+            <h4 class="font-bold text-xs text-gray-800">${item.product.name}</h4>
+            ${extrasText}
+            <span class="text-xs font-bold text-red-700 block mt-0.5">
+              R$ ${(item.unitPrice * item.quantity).toFixed(2).replace('.', ',')}
+            </span>
+          </div>
+
+          <div class="flex items-center space-x-2 bg-white px-2 py-1 rounded-lg border">
+            <button onclick="changeQty(${index}, -1)" class="text-gray-500 hover:text-red-700 text-xs px-1 font-bold">-</button>
+            <span class="text-xs font-bold text-gray-800">${item.quantity}</span>
+            <button onclick="changeQty(${index}, 1)" class="text-gray-500 hover:text-red-700 text-xs px-1 font-bold">+</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  calculateTotals();
+}
+
+function changeQty(index, delta) {
+  cart[index].quantity += delta;
+
+  if (cart[index].quantity <= 0) {
+    cart.splice(index, 1);
+  }
+
+  updateCartUI();
+}
+
+
+// =====================================
+// ENTREGA OU RETIRADA
+// =====================================
+
+function setDeliveryType(type) {
+  deliveryType = type;
+
+  const btnDelivery = document.getElementById('btn-type-delivery');
+  const btnPickup = document.getElementById('btn-type-pickup');
+  const addressField = document.getElementById('address-field');
+
+  if (type === 'delivery') {
+    btnDelivery.className = "py-2 text-xs font-bold rounded-lg border border-red-700 bg-red-700 text-white flex items-center justify-center space-x-1";
+
+    btnPickup.className = "py-2 text-xs font-bold rounded-lg border border-gray-300 text-gray-700 flex items-center justify-center space-x-1";
+
+    addressField.classList.remove('hidden');
+
+  } else {
+    btnPickup.className = "py-2 text-xs font-bold rounded-lg border border-red-700 bg-red-700 text-white flex items-center justify-center space-x-1";
+
+    btnDelivery.className = "py-2 text-xs font-bold rounded-lg border border-gray-300 text-gray-700 flex items-center justify-center space-x-1";
+
+    addressField.classList.add('hidden');
+  }
+
+  calculateTotals();
+}
+
+
+// =====================================
+// FORMA DE PAGAMENTO
+// =====================================
+
+function handlePaymentChange() {
+  const method = document.getElementById('payment-method').value;
+
+  const changeField = document.getElementById('change-field');
+
+  if (method === 'dinheiro') {
+    changeField.classList.remove('hidden');
+  } else {
+    changeField.classList.add('hidden');
+  }
+}
+
+
+// =====================================
+// CALCULAR VALORES
+// =====================================
+
+function calculateTotals() {
+  const subtotal = cart.reduce(
+    (sum, item) => sum + (item.unitPrice * item.quantity),
+    0
+  );
+
+  const deliveryFee = deliveryType === 'delivery' && cart.length > 0
+    ? 5.00
+    : 0.00;
+
+  const total = subtotal + deliveryFee;
+
+  document.getElementById('subtotal-val').innerText =
+    `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
+
+  document.getElementById('delivery-fee-val').innerText =
+    `R$ ${deliveryFee.toFixed(2).replace('.', ',')}`;
+
+  document.getElementById('total-val').innerText =
+    `R$ ${total.toFixed(2).replace('.', ',')}`;
+}
+
+
+// =====================================
+// ABRIR E FECHAR CARRINHO
+// =====================================
+
+function toggleCart() {
+  document.getElementById('cart-drawer').classList.toggle('hidden');
+}
+
+
+// =====================================
+// FINALIZAR PEDIDO PELO WHATSAPP
+// =====================================
+
+function finishOrder() {
+
+  // Bloqueia a finalização fora do horário ou na terça-feira
+  const statusLoja = obterStatusFuncionamento();
+
+  if (!statusLoja.aberto) {
+    verificarHorarioFuncionamento();
+    alert(statusLoja.mensagem);
+    return;
+  }
+
+  // Verifica se o carrinho está vazio
   if (cart.length === 0) {
     alert("Seu carrinho está vazio! Adicione itens antes de finalizar.");
     return;
   }
 
   const customerName = document.getElementById('customer-name').value.trim();
+
   const paymentMethod = document.getElementById('payment-method').value;
+
   const address = document.getElementById('delivery-address').value.trim();
+
   const changeVal = document.getElementById('change-value').value;
 
   if (!customerName) {
@@ -2255,9 +2419,11 @@ setInterval(verificarHorarioFuncionamento, 10000);
     return;
   }
 
-  let orderText = `*NOVO PEDIDO - ANGÉLICA LANCHES*\n*Cliente:* ${customerName}\n--------------------------------\n`;
+  let orderText =
+    `*NOVO PEDIDO - ANGÉLICA LANCHES*\n*Cliente:* ${customerName}\n--------------------------------\n`;
 
   cart.forEach(item => {
+
     orderText += `• ${item.quantity}x ${item.product.name}\n`;
 
     if (item.extras.length > 0) {
@@ -2267,12 +2433,19 @@ setInterval(verificarHorarioFuncionamento, 10000);
     orderText += `  Valor: R$ ${(item.unitPrice * item.quantity).toFixed(2).replace('.', ',')}\n\n`;
   });
 
-  const subtotal = cart.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
+  const subtotal = cart.reduce(
+    (sum, item) => sum + (item.unitPrice * item.quantity),
+    0
+  );
+
   const deliveryFee = deliveryType === 'delivery' ? 5.00 : 0.00;
+
   const total = subtotal + deliveryFee;
 
   orderText += `--------------------------------\n`;
+
   orderText += `*Subtotal:* R$ ${subtotal.toFixed(2).replace('.', ',')}\n`;
+
   orderText += `*Tipo:* ${deliveryType === 'delivery' ? 'Entrega (R$ 5,00)' : 'Retirada no Balcão'}\n`;
 
   if (deliveryType === 'delivery') {
@@ -2286,6 +2459,7 @@ setInterval(verificarHorarioFuncionamento, 10000);
   }
 
   orderText += `--------------------------------\n`;
+
   orderText += `*TOTAL DO PEDIDO:* R$ ${total.toFixed(2).replace('.', ',')}\n`;
 
   const phone = "5517992230627";
