@@ -167,6 +167,23 @@
       </div>
 
       <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="promocoes"
+          data-id="p1"
+          data-name="Saladinha"
+          data-price="9.99">
+        <div class="relative h-48 overflow-hidden bg-gray-100"><img src="saladinhapromo.jpg" alt="Saladinha" class="product-img w-full h-full object-cover" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 9,99</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div>
+            <h3 class="font-bold text-gray-800 text-base">Saladinha</h3>
+            <p class="text-xs text-gray-500 mt-1">1 Saladinha </p>
+          </div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 9,99</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="promocoes"
           data-id="p2"
           data-name="Combo Batata Insana"
           data-price="49.99">
@@ -1442,7 +1459,7 @@
         </div>
       </div>
       <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="bebidas" data-id="bb6" data-name="Coca-Cola 1L Vidro" data-price="12.00">
-        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://tdc0wy.vteximg.com.br/arquivos/ids/159106-1000-1000/REFRIGERANTE-COCA-COLA-VD-1L-RETORNAVEL.png?v=638121802202370000" alt="Coca-Cola 1L Vidro" class="product-img w-full h-full object-cover" loading="lazy" />
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=500&auto=format&fit=crop" alt="Coca-Cola 1L Vidro" class="product-img w-full h-full object-cover" loading="lazy" />
           <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 12,00</span>
         </div>
         <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
@@ -1858,6 +1875,75 @@
       selectCategory('promocoes');
     };
 
+    // =====================================
+// HORÁRIO DE FUNCIONAMENTO
+// =====================================
+
+function verificarHorarioFuncionamento() {
+    const agora = new Date();
+
+    const horarioBrasilia = new Date(
+        agora.toLocaleString("en-US", {
+            timeZone: "America/Sao_Paulo"
+        })
+    );
+
+    const hora = horarioBrasilia.getHours();
+    const minutos = horarioBrasilia.getMinutes();
+
+    const horarioAtual = hora * 60 + minutos;
+
+    const abertura = 18 * 60 + 45; // 18:45
+    const fechamento = 23 * 60 + 45; // 23:45
+
+    const aberto = horarioAtual >= abertura &&
+                   horarioAtual < fechamento;
+
+    document.body.classList.toggle("site-fechado", !aberto);
+
+    let aviso = document.getElementById("aviso-horario");
+
+    if (!aviso) {
+        aviso = document.createElement("div");
+        aviso.id = "aviso-horario";
+
+        aviso.style.cssText = `
+            text-align: center;
+            padding: 15px;
+            background: #991b1b;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        `;
+
+        document.body.prepend(aviso);
+    }
+
+    if (!aberto) {
+        aviso.innerHTML =
+            "Estamos fechados! Nosso horário é das 18:45 às 23:45.";
+        aviso.style.display = "block";
+    } else {
+        aviso.style.display = "none";
+    }
+
+    // Bloqueia os botões de adicionar produtos
+    document.querySelectorAll(".btn-add").forEach(botao => {
+        botao.disabled = !aberto;
+        botao.style.opacity = aberto ? "1" : "0.5";
+        botao.style.cursor = aberto ? "pointer" : "not-allowed";
+    });
+
+    return aberto;
+}
+
+// Verifica ao abrir e atualiza automaticamente
+verificarHorarioFuncionamento();
+setInterval(verificarHorarioFuncionamento, 10000);
+
     // NAVEGAÇÃO DE CATEGORIAS
     function selectCategory(catKey) {
       currentCategory = catKey;
@@ -2124,60 +2210,91 @@
       document.getElementById('cart-drawer').classList.toggle('hidden');
     }
 
-    function finishOrder() {
-      if (cart.length === 0) {
-        alert("Seu carrinho está vazio! Adicione itens antes de finalizar.");
-        return;
-      }
+   function finishOrder() {
 
-      const customerName = document.getElementById('customer-name').value.trim();
-      const paymentMethod = document.getElementById('payment-method').value;
-      const address = document.getElementById('delivery-address').value.trim();
-      const changeVal = document.getElementById('change-value').value;
+  // VERIFICA HORÁRIO DE FUNCIONAMENTO DE BRASÍLIA
+  const horario = new Intl.DateTimeFormat('pt-BR', {
+    timeZone: 'America/Sao_Paulo',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23'
+  }).formatToParts(new Date());
 
-      if (!customerName) {
-        alert("Por favor, digite o nome do cliente.");
-        document.getElementById('customer-name').focus();
-        return;
-      }
+  const hora = Number(horario.find(p => p.type === 'hour').value);
+  const minuto = Number(horario.find(p => p.type === 'minute').value);
 
-      if (deliveryType === 'delivery' && !address) {
-        alert("Por favor, digite o endereço completo de entrega.");
-        document.getElementById('delivery-address').focus();
-        return;
-      }
+  const horarioAtual = hora * 60 + minuto;
+  const abertura = 18 * 60 + 45;
+  const fechamento = 23 * 60 + 45;
 
-      let orderText = `*NOVO PEDIDO - ANGÉLICA LANCHES*\n*Cliente:* ${customerName}\n--------------------------------\n`;
+  if (horarioAtual < abertura || horarioAtual >= fechamento) {
+    alert("Estamos fechados! Nosso horário de funcionamento é todos os dias, das 18:45 às 23:45.");
+    return;
+  }
 
-      cart.forEach(item => {
-        orderText += `• ${item.quantity}x ${item.product.name}\n`;
-        if (item.extras.length > 0) {
-          orderText += `  Adicionais: ${item.extras.map(e => e.name).join(', ')}\n`;
-        }
-        orderText += `  Valor: R$ ${(item.unitPrice * item.quantity).toFixed(2).replace('.', ',')}\n\n`;
-      });
+  // VERIFICA SE O CARRINHO ESTÁ VAZIO
+  if (cart.length === 0) {
+    alert("Seu carrinho está vazio! Adicione itens antes de finalizar.");
+    return;
+  }
 
-      const subtotal = cart.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
-      const deliveryFee = deliveryType === 'delivery' ? 5.00 : 0.00;
-      const total = subtotal + deliveryFee;
+  const customerName = document.getElementById('customer-name').value.trim();
+  const paymentMethod = document.getElementById('payment-method').value;
+  const address = document.getElementById('delivery-address').value.trim();
+  const changeVal = document.getElementById('change-value').value;
 
-      orderText += `--------------------------------\n`;
-      orderText += `*Subtotal:* R$ ${subtotal.toFixed(2).replace('.', ',')}\n`;
-      orderText += `*Tipo:* ${deliveryType === 'delivery' ? 'Entrega (R$ 5,00)' : 'Retirada no Balcão'}\n`;
-      if (deliveryType === 'delivery') {
-        orderText += `*Endereço:* ${address}\n`;
-      }
-      orderText += `*Forma de Pagamento:* ${paymentMethod.toUpperCase()}\n`;
+  if (!customerName) {
+    alert("Por favor, digite o nome do cliente.");
+    document.getElementById('customer-name').focus();
+    return;
+  }
 
-      if (paymentMethod === 'dinheiro' && changeVal) {
-        orderText += `*Troco para:* R$ ${parseFloat(changeVal).toFixed(2).replace('.', ',')}\n`;
-      }
+  if (deliveryType === 'delivery' && !address) {
+    alert("Por favor, digite o endereço completo de entrega.");
+    document.getElementById('delivery-address').focus();
+    return;
+  }
 
-      orderText += `--------------------------------\n*TOTAL DO PEDIDO:* R$ ${total.toFixed(2).replace('.', ',')}\n`;
+  let orderText = `*NOVO PEDIDO - ANGÉLICA LANCHES*\n*Cliente:* ${customerName}\n--------------------------------\n`;
 
-      const phone = "5517992230627";
-      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(orderText)}`, '_blank');
+  cart.forEach(item => {
+    orderText += `• ${item.quantity}x ${item.product.name}\n`;
+
+    if (item.extras.length > 0) {
+      orderText += `  Adicionais: ${item.extras.map(e => e.name).join(', ')}\n`;
     }
+
+    orderText += `  Valor: R$ ${(item.unitPrice * item.quantity).toFixed(2).replace('.', ',')}\n\n`;
+  });
+
+  const subtotal = cart.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
+  const deliveryFee = deliveryType === 'delivery' ? 5.00 : 0.00;
+  const total = subtotal + deliveryFee;
+
+  orderText += `--------------------------------\n`;
+  orderText += `*Subtotal:* R$ ${subtotal.toFixed(2).replace('.', ',')}\n`;
+  orderText += `*Tipo:* ${deliveryType === 'delivery' ? 'Entrega (R$ 5,00)' : 'Retirada no Balcão'}\n`;
+
+  if (deliveryType === 'delivery') {
+    orderText += `*Endereço:* ${address}\n`;
+  }
+
+  orderText += `*Forma de Pagamento:* ${paymentMethod.toUpperCase()}\n`;
+
+  if (paymentMethod === 'dinheiro' && changeVal) {
+    orderText += `*Troco para:* R$ ${parseFloat(changeVal).toFixed(2).replace('.', ',')}\n`;
+  }
+
+  orderText += `--------------------------------\n`;
+  orderText += `*TOTAL DO PEDIDO:* R$ ${total.toFixed(2).replace('.', ',')}\n`;
+
+  const phone = "5517992230627";
+
+  window.open(
+    `https://wa.me/${phone}?text=${encodeURIComponent(orderText)}`,
+    '_blank'
+  );
+}
   </script>
 </body>
 </html>
