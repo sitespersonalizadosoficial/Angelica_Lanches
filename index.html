@@ -8,41 +8,53 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap');
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #f8fafc;
-    }
-/* Imagens dos produtos */
-.product-img {
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap');
+  
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8fafc;
+  }
+
+  /* Estilo padrão para fotos normais de produtos */
+  .product-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
-}
+  }
 
-/* Imagens verticais dos combos */
-.card[data-category="combos"] .product-img,
-.card[data-category="promocoes"] .product-img {
-    object-fit: contain;
-    object-position: center;
-    background-color: #f3f4f6;
-}
-
-/* Mantém o tamanho original da área da imagem */
-.card .relative {
+  /* Altura fixa padrão para lanches, pizzas, bebidas, etc. */
+  .card .relative {
     height: 12rem;
     overflow: hidden;
-}
-    .scrollbar-hide::-webkit-scrollbar {
-      display: none;
-    }
-    .scrollbar-hide {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-  </style>
+  }
+
+  /* AJUSTE PARA COMBOS E PROMOÇÕES:
+     A altura se ajusta automaticamente à proporção da imagem.
+     Exibe o banner inteiro, sem cortes e de ponta a ponta. */
+  .card[data-category="combos"] .relative,
+  .card[data-category="promocoes"] .relative {
+    height: auto !important;
+  }
+
+  .card[data-category="combos"] .product-img,
+  .card[data-category="promocoes"] .product-img {
+    width: 100%;
+    height: auto !important;
+    display: block;
+    object-fit: contain;
+  }
+
+  /* Ocultar barra de rolagem nas abas */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>
 </head>
 <body class="bg-gray-100 text-gray-800 pb-20">
 
@@ -250,7 +262,7 @@
         </div>
       </div>
       <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_hamburguer" data-id="lh6" data-name="X-Tudo" data-price="38.00">
-        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="X-Tudo" class="product-img w-full h-full object-cover" loading="lazy" />
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="xtudo.jpeg" alt="X-Tudo" class="product-img w-full h-full object-cover" loading="lazy" />
           <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 38,00</span>
         </div>
         <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
@@ -810,7 +822,7 @@
         </div>
       </div>
       <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="macarrao_chapa" data-id="mc4" data-name="Especial da Casa" data-price="47.00">
-        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=500&auto=format&fit=crop" alt="Especial da Casa" class="product-img w-full h-full object-cover" loading="lazy" />
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="macarraoespecialdacasa.jpeg" alt="Especial da Casa" class="product-img w-full h-full object-cover" loading="lazy" />
           <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 47,00</span>
         </div>
         <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
